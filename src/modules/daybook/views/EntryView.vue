@@ -23,7 +23,7 @@
         <textarea placeholder="What happened today?"></textarea>
     </div>
 
-    <Fab />
+    <Fab icon="fa-save" />
 
     <img src="https://s2.abcstatics.com/media/viajar/2017/09/09/atacama-desierto-florido-chile-kN7E--620x349@abc.JPG" 
         alt="vergel-atacama"
