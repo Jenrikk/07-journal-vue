@@ -2,8 +2,8 @@
   <div class="entry-container mb-3 pointer p-2" @click="$router.push({name: 'entry', params: {id: entry.id}})">
     <div class="entry-title d-flex">
       <span class="text-success fs-5 fw-bold">{{ getDay }} </span>
-      <span class="mx-1 fs-5">{{getNameMonth}} </span>
-      <span class="mx-2 fw-light">{{getYear}}, {{getNameDay}}</span>
+      <span class="mx-1 fs-5">{{getMonthName}} </span>
+      <span class="mx-2 fw-light">{{getYear}}, {{getDayName}}</span>
     </div>
     <div class="entry-description">
       {{shortText}}
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import getDayMonthYear from '../helpers/getDayMonthYear';
+
 export default {
   props: {
     entry: {
@@ -26,24 +28,20 @@ export default {
         : this.entry.text
     },
     getDay() {
-      return new Date(this.entry.date).getDate()
+      const { dayNumber } = getDayMonthYear(this.entry.date)
+      return dayNumber
     },
-    getNameMonth() {
-      const date = new Date(this.entry.date)
-
-      const month = new Intl.DateTimeFormat("es-ES", { month: "short" }).format(date)
-
-      return month[0].toUpperCase() + month.substring(1)
+    getMonthName() {
+      const { monthName } = getDayMonthYear(this.entry.date)
+      return monthName
     },
     getYear() {
-      return new Date(this.entry.date).getFullYear()
+      const { year } = getDayMonthYear(this.entry.date)
+      return year
     },
-    getNameDay() {
-      const date = new Date(this.entry.date)
-
-      const day = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(date)
-
-      return day[0].toUpperCase() + day.substring(1)
+    getDayName() {
+      const { dayName } = getDayMonthYear(this.entry.date)
+      return dayName
     }
   }
 };

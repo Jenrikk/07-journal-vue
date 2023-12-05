@@ -1,34 +1,37 @@
 <template>
-    <div class="entry-title d-flex justify-content-between p-2">
-        <div>
-            <span class="text-success fs-3 fw-bold">{{ getDay }}</span>
-            <span class="mx-1 fs-3">{{getMonthName}}</span>
-            <span class="mx-2 fs-4 fw-light"> {{getYear}}, {{ getDayName }}</span>
-        </div>
-        <div>
-            <button class="btn btn-danger mx-2">
-                Borrar
-                <i class="fa fa-trash-alt"></i>
-            </button>
-            <button class="btn btn-primary">
-                Subir foto
-                <i class="fa fa-upload"></i>
-            </button>
+    <template v-if="entryData">
+        <div class="entry-title d-flex justify-content-between p-2">
+            <div>
+                <span class="text-success fs-3 fw-bold">{{ getDay }}</span>
+                <span class="mx-1 fs-3">{{ getMonthName }}</span>
+                <span class="mx-2 fs-4 fw-light"> {{ getYear }}, {{ getDayName }}</span>
+            </div>
+            <div>
+                <button class="btn btn-danger mx-2">
+                    Borrar
+                    <i class="fa fa-trash-alt"></i>
+                </button>
+                <button class="btn btn-primary">
+                    Subir foto
+                    <i class="fa fa-upload"></i>
+                </button>
+            </div>
+
         </div>
 
-    </div>
+        <hr>
+        
+        <div class="d-flex flex-column px-3 h-75">
+            <textarea placeholder="What happened today??" v-model="entryData.text"></textarea>
+        </div>
 
-    <hr>
-    <div class="d-flex flex-column px-3 h-75">
-        <textarea placeholder="What happened today??" v-model="entryData.text"></textarea>
-    </div>
+        <img src="https://s2.abcstatics.com/media/viajar/2017/09/09/atacama-desierto-florido-chile-kN7E--620x349@abc.JPG"
+            alt="vergel-atacama" class="img-thumbnail">
+
+    </template>
+
 
     <Fab icon="fa-save" />
-
-    <img src="https://s2.abcstatics.com/media/viajar/2017/09/09/atacama-desierto-florido-chile-kN7E--620x349@abc.JPG" 
-        alt="vergel-atacama"
-        class="img-thumbnail">
-
 </template>
 
 <script>
@@ -73,7 +76,7 @@ export default {
     methods: {
         loadEntry() {
             const entry = this.getEntryById(this.id)
-            if (!entry) this.$router.push({name: 'no-entry'})
+            if (!entry) return this.$router.push({name: 'no-entry'})
 
             this.entryData = entry
         }
@@ -81,7 +84,13 @@ export default {
 
     created() {
         this.loadEntry()
+    },
+    watch: {
+        id() {
+            this.loadEntry()
+        }
     }
+
   
 
 }
