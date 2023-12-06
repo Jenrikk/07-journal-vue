@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-center">
     <h1 class="align-self-center">Nothing selected</h1>
   </div>
-  <Fab @on-click="siuu" />
+  <Fab @on-click="createNewEntry" />
 </template>
 
 <script>
@@ -13,8 +13,8 @@ export default {
         Fab: defineAsyncComponent(() => import('../components/Fab.vue'))
     },
     methods: {
-      async siuu(){
-        console.log('siuuuuuu')
+      createNewEntry(){
+        this.$router.push({name: 'entry', params: { id: 'new'}})
       }
     }
 };

@@ -11,6 +11,6 @@ export const updateEntry = (state, entryUpdated) => {
     state.entries[index] = entryUpdated
 }
 
-export const addEntry = (/*state*/) => {
-
+export const addEntry = (state, newEntry) => {
+    state.entries.unshift(newEntry)
 }

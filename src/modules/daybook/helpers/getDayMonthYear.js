@@ -5,12 +5,12 @@ const getDayMonthYear = (dateString) => {
 
     const dayNumber = date.getDate()
 
-    const month= new Intl.DateTimeFormat("es-ES", { month: "short" }).format(date)
+    const month= new Intl.DateTimeFormat("en-EN", { month: "short" }).format(date)
     const monthName = month[0].toUpperCase() + month.substring(1)
 
     const year = date.getFullYear()
 
-    const day = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(date)
+    const day = new Intl.DateTimeFormat("en-EN", { weekday: "long" }).format(date)
     const dayName = day[0].toUpperCase() + day.substring(1)
 
     return {
