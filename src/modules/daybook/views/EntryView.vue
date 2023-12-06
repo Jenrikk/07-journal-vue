@@ -30,13 +30,13 @@
 
     </template>
 
-
-    <Fab icon="fa-save" />
+    <!-- @on:click es simplemente una emision de un evento, lo podriamos llamar @on-cualquier-cosa por ejemplo -->
+    <Fab icon="fa-save" @on-click="saveEntry" /> 
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import getDayMonthYear from '../helpers/getDayMonthYear'
 
 export default {
@@ -79,6 +79,10 @@ export default {
             if (!entry) return this.$router.push({name: 'no-entry'})
 
             this.entryData = entry
+        },
+        ...mapActions('journal', ['updateEntry']),
+        async saveEntry() {
+            this.updateEntry(this.entryData)
         }
     },
 
