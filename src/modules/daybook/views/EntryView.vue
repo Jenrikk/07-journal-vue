@@ -7,11 +7,18 @@
                 <span class="mx-2 fs-4 fw-light"> {{ getYear }}, {{ getDayName }}</span>
             </div>
             <div>
-                <button class="btn btn-danger mx-2">
+
+                <input type="file" @change="onSelectedImage" ref="imageSelector" v-show="false" accept="image/png, image/jpeg">
+
+                <button 
+                    v-if="entryData.id"
+                    class="btn btn-danger mx-2"
+                    @click="onDeleteEntry">
                     Borrar
                     <i class="fa fa-trash-alt"></i>
                 </button>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary"
+                    @click="onSelectImage">
                     Subir foto
                     <i class="fa fa-upload"></i>
                 </button>
@@ -25,7 +32,10 @@
             <textarea placeholder="What happened today??" v-model="entryData.text"></textarea>
         </div>
 
-        <img src="https://s2.abcstatics.com/media/viajar/2017/09/09/atacama-desierto-florido-chile-kN7E--620x349@abc.JPG"
+        <!-- <img src="https://s2.abcstatics.com/media/viajar/2017/09/09/atacama-desierto-florido-chile-kN7E--620x349@abc.JPG"
+            alt="vergel-atacama" class="img-thumbnail"> -->
+
+        <img v-if="localImage" :src="localImage"
             alt="vergel-atacama" class="img-thumbnail">
 
     </template>
@@ -37,6 +47,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import { mapActions, mapGetters } from 'vuex'
+import Swal from 'sweetalert2'
 import getDayMonthYear from '../helpers/getDayMonthYear'
 
 export default {
@@ -51,7 +62,9 @@ export default {
     },
     data() {
         return {
-            entryData: null
+            entryData: null,
+            localImage: null,
+            file: null
         }
     },
     computed: {
@@ -90,8 +103,14 @@ export default {
 
             this.entryData = entry
         },
-        ...mapActions('journal', ['updateEntry', 'createEntry']),
+        ...mapActions('journal', ['updateEntry', 'createEntry', 'deleteEntry']),
         async saveEntry() {
+            new Swal({
+                title: "Please wait",
+                allowOutsideClick: false
+            })
+            Swal.showLoading()
+
             if(this.entryData.id){
                 // update
                 await this.updateEntry(this.entryData)
@@ -101,7 +120,49 @@ export default {
 
                this.$router.push({name: 'entry', params: {id: resp}})
             }
-            
+
+            Swal.fire('Saved', 'Entry was successfully saved', 'success')
+        },
+        async onDeleteEntry(){
+            const result = await Swal.fire({
+                title: 'Are you sure you want to delete?',
+                text: 'Once it is deleted, it will not be available in the database',
+                showDenyButton: true,
+                confirmButtonText: 'Yes, delete it'
+            })
+
+            if(result.isConfirmed) {
+                new Swal({
+                    title: 'Please wait',
+                    allowOutsideClick: false
+                })
+                Swal.showLoading()
+
+                await this.deleteEntry(this.entryData.id)
+                this.$router.push({name: 'no-entry'})
+
+                Swal.fire('Deleted', '', 'success')
+            }
+        },
+
+        onSelectedImage(event) {
+            const file = event.target.files[0]
+
+            if(!file){
+                this.localImage = null
+                this.file = null
+                return
+            }
+
+            this.file = file
+
+            // FileReader is native in js
+            const fr = new FileReader()
+            fr.onload = () => this.localImage = fr.result
+            fr.readAsDataURL(file)
+        },
+        onSelectImage(){
+            this.$refs.imageSelector.click()
         }
     },
 
