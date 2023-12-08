@@ -11,7 +11,7 @@
                 <input type="file" @change="onSelectedImage" ref="imageSelector" v-show="false" accept="image/png, image/jpeg">
 
                 <button 
-                    v-if="entryData.id"
+                    v-if="entryData.id && !localImage"
                     class="btn btn-danger mx-2"
                     @click="onDeleteEntry">
                     Borrar
@@ -32,8 +32,8 @@
             <textarea placeholder="What happened today??" v-model="entryData.text"></textarea>
         </div>
 
-        <!-- <img src="https://s2.abcstatics.com/media/viajar/2017/09/09/atacama-desierto-florido-chile-kN7E--620x349@abc.JPG"
-            alt="vergel-atacama" class="img-thumbnail"> -->
+        <img v-if="entryData.picture" :src="entryData.picture"
+            alt="vergel-atacama" class="img-thumbnail">
 
         <img v-if="localImage" :src="localImage"
             alt="vergel-atacama" class="img-thumbnail">
@@ -91,6 +91,7 @@ export default {
     methods: {
         loadEntry() {
             let entry;
+            this.localImage = null
             
             if(this.id === 'new'){
                 entry = {
@@ -126,6 +127,7 @@ export default {
                this.$router.push({name: 'entry', params: {id: resp}})
             }
 
+            this.file = null
             Swal.fire('Saved', 'Entry was successfully saved', 'success')
         },
         async onDeleteEntry(){
