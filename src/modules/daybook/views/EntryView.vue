@@ -48,7 +48,9 @@
 import { defineAsyncComponent } from 'vue'
 import { mapActions, mapGetters } from 'vuex'
 import Swal from 'sweetalert2'
+
 import getDayMonthYear from '../helpers/getDayMonthYear'
+import uploadImage from '../helpers/uploadImage'
 
 export default {
     props: {
@@ -110,6 +112,9 @@ export default {
                 allowOutsideClick: false
             })
             Swal.showLoading()
+
+            const pictureUrl = await uploadImage(this.file)
+            this.entryData.picture = pictureUrl
 
             if(this.entryData.id){
                 // update
