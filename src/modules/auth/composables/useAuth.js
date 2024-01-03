@@ -9,10 +9,16 @@ const useAuth = () => {
         return resp
     }
 
+    const signInUser = async (user) => {
+        const resp = await store.dispatch('auth/signInUser', user)
+        return resp
+    }
+
 
     return {
         //Actions
-        createUser
+        createUser,
+        signInUser
 
     }
 
