@@ -40,8 +40,8 @@ export default {
         const {signInUser} = useAuth()
         
         const userForm = ref({
-            email: '',
-            password: ''
+            email: 'enrique@fakedomain.com',
+            password: '123456'
         })
 
         return {
