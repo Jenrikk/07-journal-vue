@@ -1,11 +1,10 @@
 <template>
-  <div class="home">
+  <div class="container home">
     <img alt="Vue logo" src="../assets/logo.png">
 
+    <button @click="goToDaybook" class="btn btn-primary " >Access</button>
   </div>
-    <button @click="goToDaybook" class="btn btn-primary">Primary</button>
-    <button class="btn btn-secondary">Secondary</button>
-    <button class="btn btn-success">Success</button>
+    
 </template>
 
 <script>
@@ -13,10 +12,19 @@
 export default {
   methods: {
     goToDaybook() {
-      this.$router.push({name: 'no-entry'})
+      this.$router.push({name: 'login'})
     }
   }
 }
 
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  width: 200px;
+}
+</style>
 
